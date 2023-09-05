@@ -1,4 +1,4 @@
-package com.compass.ux;
+package com.aros.apron;
 
 import org.junit.Test;
 

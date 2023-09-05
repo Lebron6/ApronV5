@@ -12,6 +12,7 @@
         android:gravity="center|left"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:background="@color/uxsdk_black_95_percent">
 
@@ -42,7 +43,7 @@
                 android:layout_marginLeft="@dimen/uxsdk_2_dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="0"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 android:textSize="@dimen/uxsdk_9_dp"
                 android:textStyle="bold" />
 

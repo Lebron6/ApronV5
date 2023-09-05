@@ -13,11 +13,6 @@ message RTKConnectionState {
     UNKNOWN = 255;//未知基站位置连接状态。
   }
   RTKConnectionStateWithBaseStationReferenceSource rtkConnectionStateWithBaseStationReferenceSource = 1;
-  //基站ID
-  string baseStationID = 2;
-  //基站名称
-  string baseStationName = 3;
-  //基站信号等级
-  int32 signalLevel = 4;
+
 
 }

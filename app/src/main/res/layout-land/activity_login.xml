@@ -7,6 +7,7 @@
     tools:ignore="MissingDefaultResource">
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/layout_account"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x120"
@@ -17,6 +18,7 @@
 
         <EditText
             android:id="@+id/et_account"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
@@ -31,6 +33,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/layout_password"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x120"
@@ -42,6 +45,7 @@
 
         <EditText
             android:id="@+id/et_password"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/iv_password"
@@ -67,6 +71,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_centerInParent="true"
         android:id="@+id/layout_sn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x120"
@@ -83,7 +88,7 @@
             android:layout_toLeftOf="@+id/iv_sn"
             android:background="@null"
             android:enabled="false"
-            android:text="1ZNDH3L0010383"
+            android:text=""
             android:gravity="center_vertical"
             android:hint="接入飞行器获取SN码"
             android:paddingLeft="@dimen/x30"
@@ -113,7 +118,7 @@
         android:background="@drawable/bg_btn_login"
         android:elevation="@dimen/x9"
         android:gravity="center"
-        android:text="登录"
+        android:text="Open"
         android:textColor="@color/white"
         android:textSize="18sp" />
 </RelativeLayout>

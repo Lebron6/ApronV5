@@ -1,4 +1,4 @@
-package com.compass.ux;
+package com.aros.apron;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.compass.ux", appContext.getPackageName());
+        assertEquals("com.aros.apron", appContext.getPackageName());
     }
 }

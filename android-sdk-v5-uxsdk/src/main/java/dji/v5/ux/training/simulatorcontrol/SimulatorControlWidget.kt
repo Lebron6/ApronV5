@@ -40,6 +40,7 @@ import androidx.core.content.res.use
 import dji.sdk.keyvalue.value.common.LocationCoordinate2D
 import dji.sdk.keyvalue.value.flightcontroller.SimulatorInitializationSettings
 import dji.sdk.keyvalue.value.flightcontroller.SimulatorState
+import dji.v5.utils.common.DisplayUtil
 import dji.v5.utils.common.LogUtils
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.functions.Consumer
@@ -52,7 +53,6 @@ import dji.v5.ux.core.communication.ObservableInMemoryKeyedStore
 import dji.v5.ux.core.communication.OnStateChangeCallback
 import dji.v5.ux.core.extension.*
 import dji.v5.ux.core.ui.HorizontalSeekBar
-import dji.v5.ux.core.util.DisplayUtil
 import dji.v5.ux.core.util.EditTextNumberInputFilter
 import dji.v5.ux.core.util.RxUtil
 import dji.v5.ux.R
@@ -79,20 +79,22 @@ import kotlin.math.max
  * configuration.
  */
 open class SimulatorControlWidget @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : ConstraintLayoutWidget<ModelState>(
-        context,
-        attrs,
-        defStyleAttr),
-        View.OnClickListener, OnStateChangeCallback<Any?>, OnLoadPresetListener {
+    context,
+    attrs,
+    defStyleAttr
+),
+    View.OnClickListener, OnLoadPresetListener {
 
     //region Fields
     private val widgetModel by lazy {
         SimulatorControlWidgetModel(
-                DJISDKModel.getInstance(),
-                ObservableInMemoryKeyedStore.getInstance())
+            DJISDKModel.getInstance(),
+            ObservableInMemoryKeyedStore.getInstance()
+        )
     }
     private val latitudeEditText: EditText = findViewById(R.id.edit_text_simulator_lat)
     private val longitudeEditText: EditText = findViewById(R.id.edit_text_simulator_lng)
@@ -640,21 +642,22 @@ open class SimulatorControlWidget @JvmOverloads constructor(
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.productConnection
-                .observeOn(SchedulerProvider.ui())
-                .subscribe { onProductChanged(it) })
+            .observeOn(SchedulerProvider.ui())
+            .subscribe { onProductChanged(it) })
         addReaction(widgetModel.satelliteCount
-                .observeOn(SchedulerProvider.ui())
-                .subscribe { this.updateSatelliteCount(it) })
+            .observeOn(SchedulerProvider.ui())
+            .subscribe { this.updateSatelliteCount(it) })
 //        addReaction(widgetModel.simulatorWindData
 //                .debounce(500, TimeUnit.MILLISECONDS)
 //                .observeOn(SchedulerProvider.ui())
 //                .subscribe { this.updateWindValues(it) })
         addReaction(widgetModel.simulatorState
-                .observeOn(SchedulerProvider.ui())
-            .subscribe({ this.updateWidgetValues(it) }, { e -> LogUtils.e(logTag, e.message) }))
+            .observeOn(SchedulerProvider.ui())
+            .subscribe({ this.updateWidgetValues(it) }, { e -> LogUtils.e(logTag, e.message) })
+        )
         addReaction(widgetModel.isSimulatorActive
-                .observeOn(SchedulerProvider.ui())
-                .subscribe { this.updateUI(it) })
+            .observeOn(SchedulerProvider.ui())
+            .subscribe { this.updateUI(it) })
     }
 
     private fun onProductChanged(it: Boolean) {
@@ -700,22 +703,6 @@ open class SimulatorControlWidget @JvmOverloads constructor(
                 showSavePresetDialog()
             }
         }
-    }
-
-    override fun onStateChange(state: Any?) {
-        toggleVisibility()
-    }
-
-    //endregion
-
-    //region private methods
-    private fun toggleVisibility() {
-        visibility = if (visibility == View.VISIBLE) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-        uiUpdateStateProcessor.onNext(VisibilityUpdated(visibility == View.VISIBLE))
     }
 
     @SuppressLint("Recycle")
@@ -837,15 +824,6 @@ open class SimulatorControlWidget @JvmOverloads constructor(
 //                })
     }
 
-    private fun checkAndUpdateWind() {
-//        if (!isInEditMode) {
-//            addDisposable(widgetModel.simulatorWindData
-//                    .lastOrError()
-//                    .observeOn(SchedulerProvider.ui())
-//                    .subscribe(Consumer { simulatorWindData -> updateWindValues(simulatorWindData) },
-//                            RxUtil.logErrorConsumer(TAG, "Update wind")))
-//        }
-    }
 
     private fun updateSatelliteCount(satelliteCount: Int) {
         satelliteTextView.text = satelliteCount.toString()
@@ -864,10 +842,14 @@ open class SimulatorControlWidget @JvmOverloads constructor(
 
     private fun checkAndUpdateState() {
         if (!isInEditMode) {
-            addDisposable(widgetModel.isSimulatorActive.firstOrError()
+            addDisposable(
+                widgetModel.isSimulatorActive.firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateUI(it) },
-                            RxUtil.logErrorConsumer(TAG, "Update Icon ")))
+                    .subscribe(
+                        Consumer { this.updateUI(it) },
+                        RxUtil.logErrorConsumer(TAG, "Update Icon ")
+                    )
+            )
         }
     }
 
@@ -880,7 +862,7 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         longitudeEditText.filters = arrayOf<InputFilter>(EditTextNumberInputFilter("-180", "180"))
         loadPresetTextView.setOnClickListener(this)
         savePresetTextView.setOnClickListener(this)
-        simulatorSwitch.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean -> handleSwitchChange(isChecked) }
+        simulatorSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean -> handleSwitchChange(isChecked) }
         valueTextColor = getColor(R.color.uxsdk_blue)
         titleTextColor = getColor(R.color.uxsdk_white)
         headerTextColor = getColor(R.color.uxsdk_white)
@@ -920,10 +902,6 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         return progress - SIMULATION_MAX_WIND_SPEED
     }
 
-    private fun deNormalizeWindValue(progress: Int): Int {
-        return progress + SIMULATION_MAX_WIND_SPEED
-    }
-
     private fun handleSwitchChange(isChecked: Boolean) {
         uiUpdateStateProcessor.onNext(SimulatorSwitchTap(isChecked))
         if (shouldReactToCheckChange) {
@@ -947,22 +925,26 @@ open class SimulatorControlWidget @JvmOverloads constructor(
             SimulatorPresetUtils.currentSimulatorFrequency = frequencySeekBar.progress
             SimulatorPresetUtils.currentSimulatorStartLat = latitudeEditText.text.toString()
             SimulatorPresetUtils.currentSimulatorStartLng = longitudeEditText.text.toString()
-            val initializationData = SimulatorInitializationSettings(locationCoordinate2D.latitude,locationCoordinate2D.longitude,
-                    /**max(MIN_FREQUENCY, frequencySeekBar.progress),**/
-                    satelliteCountSeekBar.progress)
+            val initializationData = SimulatorInitializationSettings(
+                locationCoordinate2D.latitude, locationCoordinate2D.longitude,
+                /**max(MIN_FREQUENCY, frequencySeekBar.progress),**/
+                satelliteCountSeekBar.progress
+            )
             addDisposable(widgetModel.startSimulator(initializationData)
-                    .subscribeOn(SchedulerProvider.io())
-                    .observeOn(SchedulerProvider.ui())
-                    .subscribe({}) { error: Throwable ->
-                        if (error is UXSDKError) {
-                            setSimulatorStatus(false)
-                        }
-                    })
+                .subscribeOn(SchedulerProvider.io())
+                .observeOn(SchedulerProvider.ui())
+                .subscribe({}) { error: Throwable ->
+                    if (error is UXSDKError) {
+                        setSimulatorStatus(false)
+                    }
+                })
         } else {
             setSimulatorStatus(false)
-            Toast.makeText(context,
-                    getString(R.string.uxsdk_simulator_input_val_error),
-                    Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                getString(R.string.uxsdk_simulator_input_val_error),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -1093,7 +1075,7 @@ open class SimulatorControlWidget @JvmOverloads constructor(
     private val simulatedLocation: LocationCoordinate2D?
         get() {
             if (latitudeEditText.text.toString().isNotEmpty()
-                    && longitudeEditText.text.toString().isNotEmpty()) {
+                && longitudeEditText.text.toString().isNotEmpty()) {
                 val latCoordinates = latitudeEditText.text.toString().toDouble()
                 val lngCoordinates = longitudeEditText.text.toString().toDouble()
                 if (!latCoordinates.isNaN() && !lngCoordinates.isNaN()) {
@@ -1105,11 +1087,13 @@ open class SimulatorControlWidget @JvmOverloads constructor(
 
     private fun showSavePresetDialog() {
         if (TextUtils.isEmpty(latitudeEditText.text.toString())
-                || TextUtils.isEmpty(longitudeEditText.text.toString())) return
-        val presetData = SimulatorPresetData(latitudeEditText.text.toString().toDouble(),
-                longitudeEditText.text.toString().toDouble(),
-                satelliteCountSeekBar.progress,
-                max(MIN_FREQUENCY, frequencySeekBar.progress))
+            || TextUtils.isEmpty(longitudeEditText.text.toString())) return
+        val presetData = SimulatorPresetData(
+            latitudeEditText.text.toString().toDouble(),
+            longitudeEditText.text.toString().toDouble(),
+            satelliteCountSeekBar.progress,
+            max(MIN_FREQUENCY, frequencySeekBar.progress)
+        )
         SavePresetDialog(context, true, presetData).show()
     }
 
@@ -1356,8 +1340,10 @@ open class SimulatorControlWidget @JvmOverloads constructor(
          * 1 - Y
          * 2 - Z
          */
-        data class SimulatorWindChangeClicked(@IntRange(from = 0, to = 2) val windDirection: Int,
-                                              val isPositive: Boolean) : UIState()
+        data class SimulatorWindChangeClicked(
+            @IntRange(from = 0, to = 2) val windDirection: Int,
+            val isPositive: Boolean
+        ) : UIState()
 
     }
     //endregion

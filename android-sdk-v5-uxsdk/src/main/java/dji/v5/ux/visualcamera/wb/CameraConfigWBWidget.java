@@ -36,21 +36,22 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import dji.sdk.keyvalue.value.camera.CameraWhiteBalance;
+
+import dji.sdk.keyvalue.value.camera.CameraWhiteBalanceInfo;
 import dji.sdk.keyvalue.value.common.CameraLensType;
 import dji.sdk.keyvalue.value.common.ComponentIndexType;
+import dji.v5.utils.common.DisplayUtil;
 import dji.v5.ux.R;
 import dji.v5.ux.core.base.DJISDKModel;
 import dji.v5.ux.core.base.ICameraIndex;
 import dji.v5.ux.core.base.SchedulerProvider;
 import dji.v5.ux.core.base.widget.ConstraintLayoutWidget;
 import dji.v5.ux.core.communication.ObservableInMemoryKeyedStore;
-import dji.v5.ux.core.util.DisplayUtil;
 
 /**
  * Shows the camera's current white balance.
  */
-public class CameraConfigWBWidget extends ConstraintLayoutWidget implements ICameraIndex {
+public class CameraConfigWBWidget extends ConstraintLayoutWidget<Object> implements ICameraIndex {
     //region Constants
     private final static String EMPTY_STRING = "";
     private final static int COLOR_TEMP_MULTIPLIER = 100;
@@ -121,8 +122,8 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget implements ICam
     //endregion
 
     //region Reactions to model
-    private void updateUI(@NonNull CameraWhiteBalance whiteBalance) {
-        int wbPresetValue = whiteBalance.getMode().value();
+    private void updateUI(@NonNull CameraWhiteBalanceInfo whiteBalance) {
+        int wbPresetValue = whiteBalance.getWhiteBalanceMode().value();
         if (wbPresetValue < wbNameArray.length) {
             wbTitleTextView.setText(getResources().getString(R.string.uxsdk_white_balance_title,
                     wbNameArray[wbPresetValue]));
@@ -142,6 +143,7 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget implements ICam
         return getResources().getString(R.string.uxsdk_widget_base_camera_info_ratio);
     }
 
+    @Override
     @NonNull
     public ComponentIndexType getCameraIndex() {
         return widgetModel.getCameraIndex();
@@ -152,6 +154,7 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget implements ICam
         widgetModel.updateCameraSource(cameraIndex, lensType);
     }
 
+    @Override
     @NonNull
     public CameraLensType getLensType() {
         return widgetModel.getLensType();

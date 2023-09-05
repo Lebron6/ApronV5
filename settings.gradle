@@ -4,3 +4,4 @@ project(':uxsdk').projectDir = new File(rootProject.projectDir, '../android-sdk-
 rootProject.name = "ApronV5"
 include ':app'
 include ':android-sdk-v5-uxsdk'
+include ':OpenCV'

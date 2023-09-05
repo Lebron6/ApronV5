@@ -39,6 +39,7 @@ import android.widget.Toast
 import androidx.annotation.*
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import dji.v5.utils.common.LogUtils
 import dji.v5.utils.common.StringUtils
 import dji.v5.ux.R
 import dji.v5.ux.core.util.UnitConversionUtil.UnitType
@@ -47,12 +48,14 @@ import dji.v5.ux.core.util.UnitConversionUtil.UnitType
 /**
  * Get the [String] for the given [stringRes].
  */
-fun View.getString(@StringRes stringRes: Int, vararg value: Any): String = context.resources.getString(stringRes, *value)
+fun View.getString(@StringRes stringRes: Int, vararg value: Any): String =
+    context.resources.getString(stringRes, *value)
 
 /**
  * Get the [Drawable] for the given [drawableRes].
  */
-fun View.getDrawable(@DrawableRes drawableRes: Int): Drawable = context.resources.getDrawable(drawableRes)
+fun View.getDrawable(@DrawableRes drawableRes: Int): Drawable =
+    context.resources.getDrawable(drawableRes)
 
 /**
  * The the color int for the given [colorRes].
@@ -175,7 +178,7 @@ var ImageView.imageDrawable: Drawable?
  * @param dialogClickListener
  */
 fun View.showAlertDialog(
-    @StyleRes dialogTheme: Int = dji.v5.core.R.style.Theme_AppCompat_Dialog,
+    @StyleRes dialogTheme: Int = androidx.appcompat.R.style.Theme_AppCompat_Dialog,
     title: String? = getString(R.string.uxsdk_alert),
     icon: Drawable? = null,
     message: String? = null,
@@ -206,7 +209,7 @@ fun View.showAlertDialog(
  * @param dialogClickListener
  */
 fun View.showConfirmationDialog(
-    @StyleRes dialogTheme: Int = dji.v5.core.R.style.Theme_AppCompat_Dialog,
+    @StyleRes dialogTheme: Int = androidx.appcompat.R.style.Theme_AppCompat_Dialog,
     title: String? = getString(R.string.uxsdk_alert),
     icon: Drawable? = null,
     message: String? = null,
