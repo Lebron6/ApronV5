@@ -1,7 +1,7 @@
 //apron/product/tingyuan/batteryA
 //apron/product/tingyuan/batteryB
 syntax = "proto3";
-option java_package = "com.apron.mobilesdk.state";
+option java_package = "com.caelus.framework.iot.gateway.server.entity";
 option java_outer_classname = "ProtoBattery";
 message Battery {
   //电压(mV)

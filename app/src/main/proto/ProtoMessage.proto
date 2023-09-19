@@ -1,10 +1,10 @@
 syntax = "proto3";
-option java_package = "com.apron.mobilesdk.state";
+option java_package = "com.caelus.framework.iot.gateway.server.entity";
 option java_outer_classname = "ProtoMessage"; 
 
 
-//这里是注释juanq
-message Message  { 
+message Message  {
+
 
    string requestId = 1;
 

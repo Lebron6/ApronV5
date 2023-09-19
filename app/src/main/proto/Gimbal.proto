@@ -1,7 +1,7 @@
 //apron/product/tingyuan/gimbalA
 //apron/product/tingyuan/gimbalB
 syntax = "proto3";
-option java_package = "com.apron.mobilesdk.state";
+option java_package = "com.caelus.framework.iot.gateway.server.entity";
 option java_outer_classname = "ProtoGimbal";
 message Gimbal {
   //云台相对于飞机的姿态，以度数表示。(平台上表示云台角度)

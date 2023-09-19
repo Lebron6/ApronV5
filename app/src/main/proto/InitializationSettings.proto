@@ -1,6 +1,6 @@
 //apron/product/tingyuan/downlink_signal_quality
 syntax = "proto3";
-option java_package = "com.apron.mobilesdk.state";
+option java_package = "com.caelus.framework.iot.gateway.server.entity";
 option java_outer_classname = "ProtoInitializationSettings";
 message InitializationSettings {
   //云台模式

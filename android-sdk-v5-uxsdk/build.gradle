@@ -4,12 +4,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdk 29
+    compileSdk 33
 
     resourcePrefix "uxsdk_"
     defaultConfig {
-        minSdk 21
-        targetSdk 29
+        minSdk 24
+        targetSdk 33
     }
 
     compileOptions {
@@ -20,6 +20,7 @@ android {
     kotlinOptions{
         jvmTarget = JavaVersion.VERSION_1_8
     }
+    namespace 'dji.v5.ux'
 }
 
 dependencies {
